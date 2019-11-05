@@ -1,0 +1,72 @@
+using System;
+using System.Threading;
+using System.Net;
+using System.Net.Sockets;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json.Linq;
+using ServerRaft;
+
+namespace ServerRaft
+{
+    
+    public class UDPServer
+    {
+        private static UdpClient udpServer = new UdpClient(Helper.UdpPort);
+
+        public void ListenUDP()
+        {
+            while (true)
+            {
+                IPEndPoint RemoteIpEndPoint = new IPEndPoint(
+                    IPAddress.Any,
+                    Helper.UdpPort
+                    );
+                Byte[] receiveBytes = udpServer.Receive(ref RemoteIpEndPoint);
+                string returnData = Encoding.ASCII.GetString(receiveBytes);
+                JObject data = new JObject();
+                data = JObject.Parse(returnData);
+                Console.WriteLine(data);
+                Enum.TryParse(data["action"].ToString(), out ServerActions action);
+
+                switch(action)
+                {
+                    case ServerActions.GetClients:
+                        var clients = data["clients"];
+                        if(Program.Clients.FirstOrDefault(x => x.IP == clients["IP"].ToString() && x.Port == int.Parse(clients["Port"].ToString())) == null)
+                            Program.Clients.Add(
+                                new Client(){
+                                    IP = clients["IP"].ToString(),
+                                    Port = int.Parse(clients["Port"].ToString())
+                                }
+                            );
+                        Console.WriteLine(clients);
+                        break;
+                }
+            }
+        }
+
+        public void SendActiveClients()
+        {
+            while(true)
+            {
+                foreach (var client in Program.Clients)
+                {
+                    UdpClient udpClient = new UdpClient();
+
+                    var dataToSend = new Dictionary<string, object>();
+                    dataToSend.Add("action","GetClients");
+                    // var clients = Newtonsoft.Json.JsonConvert.SerializeObject(node);
+                    dataToSend.Add("clients",Program.Clients);
+                    var message = Newtonsoft.Json.JsonConvert.SerializeObject(dataToSend);
+                    byte[] data = Encoding.UTF8.GetBytes(message);
+                    udpClient.Send(data, data.Length, client.IP, client.Port);
+                    udpClient.Close();
+                }
+                new System.Threading.ManualResetEvent(false).WaitOne(1000);
+
+            }
+        }
+    }
+}
