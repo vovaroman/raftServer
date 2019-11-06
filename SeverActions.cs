@@ -5,6 +5,8 @@ namespace ServerRaft
     public enum ServerActions
     {
         Ping,
-        GetClients
+        GetClients,
+
+        GetLeader
     }
 }

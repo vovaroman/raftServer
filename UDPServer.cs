@@ -15,6 +15,7 @@ namespace ServerRaft
     {
         private static UdpClient udpServer = new UdpClient(Helper.UdpPort);
 
+        private static Client Leader = new Client();
         public void ListenUDP()
         {
             while (true)
@@ -42,6 +43,10 @@ namespace ServerRaft
                                 }
                             );
                         Console.WriteLine(clients);
+                        break;
+                    case ServerActions.GetLeader:
+                        Leader.IP = RemoteIpEndPoint.Address.ToString();
+                        Leader.Port = RemoteIpEndPoint.Port;
                         break;
                 }
             }
