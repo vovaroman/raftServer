@@ -7,6 +7,10 @@ namespace ServerRaft
         Ping,
         GetClients,
 
-        GetLeader
+        GetLeader,
+
+        SendToLeader,
+
+        GetFromLeader
     }
 }

@@ -48,8 +48,27 @@ namespace ServerRaft
                         Leader.IP = RemoteIpEndPoint.Address.ToString();
                         Leader.Port = RemoteIpEndPoint.Port;
                         break;
+                    case ServerActions.GetFromLeader:
+                        var returnMessage = data["data"];
+                        SendData(returnMessage, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port);
+                        break;
+                    case ServerActions.SendToLeader:
+                        var message = data["data"];
+                        SendData(message, Leader.IP, Leader.Port);
+                        break;
                 }
             }
+        }
+
+        public void SendData(object data, string IP, int Port)
+        {
+            var dataToSend = new Dictionary<string, object>();
+            dataToSend.Add("action","SendToLeader");
+            dataToSend.Add("data",data);
+            var messageToSend = Newtonsoft.Json.JsonConvert.SerializeObject(dataToSend);
+            byte[] byteMessage = Encoding.UTF8.GetBytes(messageToSend);
+            UdpClient udpClient = new UdpClient();
+            udpClient.Send(byteMessage, byteMessage.Length, IP, Port);
         }
 
         public void SendActiveClients()
