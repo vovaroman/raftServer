@@ -50,17 +50,17 @@ namespace ServerRaft
                         break;
                     case ServerActions.GetFromLeader:
                         var returnMessage = data["data"];
-                        SendData(returnMessage, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port);
+                        SendData(returnMessage, ServerActions.GetFromLeader, RemoteIpEndPoint.Address.ToString(), RemoteIpEndPoint.Port);
                         break;
                     case ServerActions.SendToLeader:
                         var message = data["data"];
-                        SendData(message, Leader.IP, Leader.Port);
+                        SendData(message, ServerActions.SendToLeader,  Leader.IP, Leader.Port);
                         break;
                 }
             }
         }
 
-        public void SendData(object data, string IP, int Port)
+        public void SendData(object data, object action, string IP, int Port)
         {
             var dataToSend = new Dictionary<string, object>();
             dataToSend.Add("action","SendToLeader");

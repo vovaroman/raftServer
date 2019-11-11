@@ -4,7 +4,6 @@
 /Users/vr/Desktop/ServerRaftC#/ServerRaft/bin/Debug/netcoreapp2.1/ServerRaft.dll
 /Users/vr/Desktop/ServerRaftC#/ServerRaft/bin/Debug/netcoreapp2.1/ServerRaft.pdb
 /Users/vr/Desktop/ServerRaftC#/ServerRaft/obj/Debug/netcoreapp2.1/ServerRaft.csprojAssemblyReference.cache
-/Users/vr/Desktop/ServerRaftC#/ServerRaft/obj/Debug/netcoreapp2.1/ServerRaft.csproj.CoreCompileInputs.cache
 /Users/vr/Desktop/ServerRaftC#/ServerRaft/obj/Debug/netcoreapp2.1/ServerRaft.AssemblyInfoInputs.cache
 /Users/vr/Desktop/ServerRaftC#/ServerRaft/obj/Debug/netcoreapp2.1/ServerRaft.AssemblyInfo.cs
 /Users/vr/Desktop/ServerRaftC#/ServerRaft/obj/Debug/netcoreapp2.1/ServerRaft.dll

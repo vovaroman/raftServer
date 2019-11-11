@@ -11,6 +11,7 @@ namespace ServerRaft
 
         SendToLeader,
 
-        GetFromLeader
+        GetFromLeader,
+        SendDataToClient
     }
 }
