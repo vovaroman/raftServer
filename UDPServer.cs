@@ -88,7 +88,7 @@ namespace ServerRaft
                     udpClient.Send(data, data.Length, client.IP, client.Port);
                     udpClient.Close();
                 }
-                new System.Threading.ManualResetEvent(false).WaitOne(1);
+                new System.Threading.ManualResetEvent(false).WaitOne(1000);
 
             }
         }

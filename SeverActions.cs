@@ -6,6 +6,14 @@ namespace ServerRaft
     {
         Ping,
         GetClients,
+        
+        Election,
+
+        VoteForLeader,
+
+        Vote,
+
+        KeepFollower,
 
         GetLeader,
 
