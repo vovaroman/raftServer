@@ -28,7 +28,7 @@ namespace ServerRaft
                 string returnData = Encoding.ASCII.GetString(receiveBytes);
                 JObject data = new JObject();
                 data = JObject.Parse(returnData);
-                Console.WriteLine(data);
+                // Console.WriteLine(data);
                 Enum.TryParse(data["action"].ToString(), out ServerActions action);
 
                 switch(action)
@@ -42,7 +42,7 @@ namespace ServerRaft
                                     Port = int.Parse(clients["Port"].ToString())
                                 }
                             );
-                        Console.WriteLine(clients);
+                        // Console.WriteLine(clients);
                         break;
                     case ServerActions.GetLeader:
                         Leader.IP = RemoteIpEndPoint.Address.ToString();
@@ -56,10 +56,22 @@ namespace ServerRaft
                         var message = data["data"];
                         SendData(message, ServerActions.SendToLeader,  Leader.IP, Leader.Port);
                         break;
+                    case ServerActions.GetDataFromLeader:
+                        SendDataClient(data,ServerActions.GetDataFromLeader, Leader.IP, Leader.Port);
+                        break;
                 }
             }
         }
-
+        public void SendDataClient(object data, object action, string IP, int Port)
+        {
+            var dataToSend = new Dictionary<string, object>();
+            dataToSend.Add("action",action);
+            dataToSend.Add("data",data);
+            var messageToSend = Newtonsoft.Json.JsonConvert.SerializeObject(dataToSend);
+            byte[] byteMessage = Encoding.UTF8.GetBytes(messageToSend);
+            UdpClient udpClient = new UdpClient();
+            udpClient.Send(byteMessage, byteMessage.Length, IP, Port);
+        }
         public void SendData(object data, object action, string IP, int Port)
         {
             var dataToSend = new Dictionary<string, object>();

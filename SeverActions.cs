@@ -20,6 +20,10 @@ namespace ServerRaft
         SendToLeader,
 
         GetFromLeader,
-        SendDataToClient
+
+        SendDataToClient,
+
+        GetDataFromLeader
+
     }
 }
